@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
                     // Fonction pour afficher les épisodes d'une saison
-                    const displayEpisodes = (episodes) => {
+                    const displayEpisodes = (episodes, saison) => {
                         // Vide la liste des épisodes
                         episodeList.innerHTML = "";
 
@@ -50,6 +50,13 @@ document.addEventListener("DOMContentLoaded", () => {
                             const episodeCard = document.createElement("div");
                             episodeCard.classList.add("card");
                             episodeCard.innerHTML = `<p class="text">Episode ${episode.episode}</p>`;
+
+                            // Ajoute un gestionnaire de clic pour rediriger vers episode.html
+                            episodeCard.addEventListener("click", () => {
+                                const episodeUrl = `episode.html?title=${encodeURIComponent(title)}&saison=${saison}&episode=${episode.episode}&video=${episode.lien_video}`;
+                                window.location.href = episodeUrl;
+                            });
+
                             episodeList.appendChild(episodeCard);
                         });
                     };
@@ -71,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             seasonCard.classList.add("active");
 
                             // Affiche les épisodes de la saison sélectionnée
-                            displayEpisodes(saison.episodes);
+                            displayEpisodes(saison.episodes, saison.saison);
                         });
 
                         // Ajoute la saison à la liste
@@ -80,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         // Sélectionne automatiquement la première saison
                         if (index === 0) {
                             seasonCard.classList.add("active");
-                            displayEpisodes(saison.episodes);
+                            displayEpisodes(saison.episodes, saison.saison);
                         }
                     });
                 } else {
