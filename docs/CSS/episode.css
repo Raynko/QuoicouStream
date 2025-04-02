@@ -1,0 +1,53 @@
+.contents {
+    margin: 0 auto; /* Centrer horizontalement */
+    padding: 20px; /* Ajoute une marge intérieure de 20px */
+    background-color: rgba(0, 0, 0, 0.45);
+    max-width: 800px; /* Limite la largeur totale */
+    box-sizing: border-box; /* Inclut le padding dans la largeur */
+    border-radius: 5px; /* Ajoute des coins arrondis */
+}
+
+.oeuvre-title {
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    user-select: none;
+    pointer-events: none; 
+}
+
+.season-episode-container {
+    display: flex; /* Place les éléments côte à côte */
+    align-items: center; /* Aligne verticalement les éléments */
+    gap: 5px; /* Ajoute un espace entre .season et .episode */
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px; /* Ajoute un espace au-dessus de la saison et de l'épisode */
+    margin-bottom: 30px; /* Ajoute un espace en dessous de la saison et de l'épisode */
+    user-select: none;
+    pointer-events: none; 
+}
+.season {
+    color: rgb(121, 121, 121)
+}
+.episode {
+    color: rgb(209, 209, 209);
+}
+
+.video {
+    position: relative;
+    width: 100%; /* La vidéo occupe toute la largeur disponible dans .contents */
+    padding-top: 56.25%; /* Ratio 16:9 pour la vidéo */
+    margin: 0; /* Supprime les marges */
+    background-color: black; /* Optionnel : ajoute un fond noir pour la vidéo */
+    box-sizing: border-box; /* Inclut le padding dans la largeur */
+
+}
+
+iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none; /* Supprime la bordure de l'iframe */
+}

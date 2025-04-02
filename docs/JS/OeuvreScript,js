@@ -1,0 +1,85 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const title = params.get("title");
+
+    if (title) {
+        // Formate le titre pour ajouter des espaces avant les majuscules
+        const formattedTitle = title.replace(/([A-Z])/g, " $1").trim();
+
+        // Affiche le titre formaté dans la page
+        document.querySelector(".oeuvre-title").textContent = formattedTitle;
+
+        // Charger les détails de l'œuvre depuis le fichier JSON
+        fetch("JSON/oeuvres.json")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erreur lors du chargement du fichier JSON : ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const oeuvre = data.oeuvres.find(o => o.title.replace(/\s+/g, "") === title);
+                if (oeuvre) {
+                    // Sélectionne les conteneurs pour les saisons et les épisodes
+                    const seasonList = document.querySelector(".seasons-list");
+                    const episodeList = document.querySelector(".episodes-list");
+
+                    // Vérifie que les conteneurs existent
+                    if (!seasonList || !episodeList) {
+                        throw new Error("Les conteneurs pour les saisons ou les épisodes sont introuvables.");
+                    }
+
+                    // Fonction pour afficher les épisodes d'une saison
+                    const displayEpisodes = (episodes) => {
+                        // Vide la liste des épisodes
+                        episodeList.innerHTML = "";
+
+                        // Ajoute les épisodes de la saison sélectionnée
+                        episodes.forEach(episode => {
+                            const episodeCard = document.createElement("div");
+                            episodeCard.classList.add("card");
+                            episodeCard.innerHTML = `<p class="text">Episode ${episode.episode}</p>`;
+                            episodeList.appendChild(episodeCard);
+                        });
+                    };
+
+                    // Affiche les saisons et ajoute un gestionnaire d'événements
+                    oeuvre.saisons.forEach((saison, index) => {
+                        const seasonCard = document.createElement("div");
+                        seasonCard.classList.add("card");
+                        seasonCard.innerHTML = `<p class="text">Saison ${saison.saison}</p>`;
+
+                        // Ajoute un gestionnaire de clic pour chaque saison
+                        seasonCard.addEventListener("click", () => {
+                            // Retire la classe "active" de toutes les saisons
+                            document.querySelectorAll(".seasons-list .card").forEach(card => {
+                                card.classList.remove("active");
+                            });
+
+                            // Ajoute la classe "active" à la saison sélectionnée
+                            seasonCard.classList.add("active");
+
+                            // Affiche les épisodes de la saison sélectionnée
+                            displayEpisodes(saison.episodes);
+                        });
+
+                        // Ajoute la saison à la liste
+                        seasonList.appendChild(seasonCard);
+
+                        // Sélectionne automatiquement la première saison
+                        if (index === 0) {
+                            seasonCard.classList.add("active");
+                            displayEpisodes(saison.episodes);
+                        }
+                    });
+                } else {
+                    document.querySelector(".oeuvre-title").textContent = "Œuvre non trouvée";
+                }
+            })
+            .catch(error => {
+                console.error("Erreur :", error);
+            });
+    } else {
+        document.querySelector(".oeuvre-title").textContent = "Œuvre non trouvée";
+    }
+});
