@@ -34,11 +34,20 @@ body {
     pointer-events: none; 
 }   
 
-.title {
+.header-title {
     color: white;
     font-size: 26px;
     display: flex;
     margin-left: 10px;
+}
+
+.header-desc {
+    color: rgb(251, 255, 0);
+    font-size: 15px;
+    display: flex;
+    margin-left: 10px;
+    font-family: Montserrat, sans-serif;
+    font-weight: normal;
 }
 
 .container {
