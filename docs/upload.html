@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uploader un fichier sur Darkibox</title>
+    <link rel="stylesheet" href="CSS/upload.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Uploader un fichier sur Darkibox</h1>
+
+        <!-- Section pour afficher le stockage -->
+        <div id="storage-info">
+            <p><strong>Stockage utilisé :</strong> <span id="storage-used">Chargement...</span></p>
+            <p><strong>Stockage restant :</strong> Illimité</p>
+        </div>
+
+        <!-- Formulaire d'upload -->
+        <form id="upload-form">
+            <label for="file-url">URL du fichier :</label>
+            <input type="url" id="file-url" placeholder="Entrez l'URL du fichier" required>
+
+            <label for="folder-select">Choisissez un dossier :</label>
+            <select id="folder-select" required>
+                <option value="">Chargement des dossiers...</option>
+            </select>
+
+            <button type="submit">Uploader</button>
+        </form>
+
+        <!-- Section pour afficher le statut -->
+        <div id="upload-status"></div>
+    </div>
+
+    <!-- Section séparée pour afficher les fichiers en cours d'upload -->
+    <div class="container upload-progress-container">
+        <h2>Fichiers en cours d'upload</h2>
+        <table id="upload-table">
+            <thead>
+                <tr>
+                    <th>URL</th>
+                    <th>Statut</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="2">Aucun fichier en cours</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="JS/upload.js"></script>
+</body>
+</html>
+
