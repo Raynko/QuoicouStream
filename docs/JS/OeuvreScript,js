@@ -1,10 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Gestion du bouton "Retour"
+    const returnBtn = document.getElementById("return-btn");
+    if (returnBtn) {
+        returnBtn.addEventListener("click", () => {
+            window.location.href = "index.html"; // Redirige vers la page principale
+        });
+    }
+
     const params = new URLSearchParams(window.location.search);
     const title = params.get("title");
 
     if (title) {
         // Formate le titre pour ajouter des espaces avant les majuscules
         const formattedTitle = title.replace(/([A-Z])/g, " $1").trim();
+
+        // Met à jour le titre de la page
+        document.title = `${formattedTitle} | QuoicouStream`;
 
         // Affiche le titre formaté dans la page
         document.querySelector(".oeuvre-title").textContent = formattedTitle;

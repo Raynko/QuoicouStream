@@ -63,3 +63,27 @@
 .seperator {
     border: 1px solid rgb(29, 73, 114);
 }
+
+.return-btn-container {
+    max-width: 800px; /* Limite la largeur totale */
+    box-sizing: border-box; /* Inclut le padding dans la largeur */
+    margin: 0 auto; /* Centrer horizontalement */
+    margin-top: -36px; /* Ajoute une marge supérieure de 20px */
+    margin-bottom: 10px;
+}
+
+.return-btn {
+    background-color: rgb(50, 69, 116);
+    color: white;
+    border: none;
+    padding: 5px 10px; /* Ajoute un espace intérieur pour le contenu */
+    border-radius: 5px; /* Ajoute des coins arrondis */
+    cursor: pointer; /* Change le curseur au survol */
+    font-size: 12px; /* Taille de la police */
+    font-weight: bold; /* Met le texte en gras */
+    display: inline-block; /* Permet au bouton de s'adapter à son contenu */
+}
+
+.return-btn:hover {
+    background-color: rgb(84, 103, 150);
+}
