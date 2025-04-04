@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" type="text/css" href="CSS/index.css">
+        <link rel="stylesheet" type="text/css" href="CSS/episode.css">
+
+        <link rel="icon" href="IMG/ICO/ICO.ico">
+        <title>| QuoicouStream</title>
+    </head>
+    <body>
+        <div class="header">
+            <div class="header-contents">
+                <img src="IMG/LOGO.png" alt="Logo QuoicouStream" class="logo">
+                <h1 class="header-title">QuoicouStream</h1>
+                <p class="header-desc">Trop baka les animes ou quoi feur !</p>
+            </div>
+        </div>  
+
+        <div class="episode-contents-container">
+            <div class="episode-contents">
+
+                <h2 class="oeuvre-title">Nom de l'oeuvre</h2> 
+
+                <!-- Saison et épisode -->
+                <div class="season-episode-texts">
+                    <p class="season-text">Saison /</p>
+                    <p class="episode-text">Épisode</p>
+                </div>
+
+                <!-- Vidéo -->
+                <div class="video-player">
+                    <iframe src="https://darkibox.com/embed-6ychhgdjsozk.html" 
+                    frameborder="0" 
+                    marginwidth="0" marginheight="0" 
+                    scrolling="no" 
+                    allowfullscreen 
+                    style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+                </div>
+            </div>
+
+            <!-- Navigation entre épisodes -->
+            <div class="prev-next-btn-container">
+                <div id="prev-episode-btn" class="prev-next-btn">🡄 Précédent</div>
+                <select id="episodes-select"></select>
+                <div id="next-episode-btn" class="prev-next-btn">Suivant 🡆</div>
+            </div>
+        </div>
+
+        <script src="JS/EpisodeScript.js"></script>
+    </body>
+</html>
