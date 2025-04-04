@@ -1,37 +1,48 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const jsonFilePath = "JSON/oeuvres.json";
-    const oeuvreList = document.querySelector(".oeuvre-list");
+    const apiKey = "141449uijs7m0mqo4w1opg";
+    const folderListUrl = `https://darkibox.com/api/folder/list?key=${apiKey}&files=0`;
 
-    fetch(jsonFilePath)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Erreur lors du chargement du fichier JSON : ${response.statusText}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            data.oeuvres.forEach(oeuvre => {
-                // Crée une nouvelle carte
-                const oeuvreCard = document.createElement("div");
-                oeuvreCard.classList.add("oeuvre-card");
+    const animesList = document.querySelector("#animes-container .oeuvre-list");
+    const seriesList = document.querySelector("#series-container .oeuvre-list");
 
-                // Ajoute le titre de l'œuvre
-                const oeuvreName = document.createElement("p");
-                oeuvreName.classList.add("oeuvre-name");
-                oeuvreName.textContent = oeuvre.title;
+    const showLoading = (targetList) => {
+        targetList.innerHTML = `<p class="loading-message">Chargement...</p>`;
+    };
 
-                // Ajoute un gestionnaire d'événements pour rediriger
-                oeuvreCard.addEventListener("click", () => {
-                    const oeuvreTitle = oeuvre.title.replace(/\s+/g, ""); // Supprime les espaces
-                    window.location.href = `oeuvre.html?title=${encodeURIComponent(oeuvreTitle)}`;
-                });
+    const loadFolders = (folderId, targetList) => {
+        showLoading(targetList);
 
-                // Ajoute le titre à la carte et la carte à la liste
-                oeuvreCard.appendChild(oeuvreName);
-                oeuvreList.appendChild(oeuvreCard);
+        fetch(`${folderListUrl}&fld_id=${folderId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.result?.folders?.length > 0) {
+                    targetList.innerHTML = "";
+                    data.result.folders.forEach(folder => {
+                        const oeuvreCardItem = document.createElement("div");
+                        oeuvreCardItem.classList.add("oeuvre-card-item");
+
+                        const oeuvreName = document.createElement("p");
+                        oeuvreName.classList.add("oeuvre-name");
+                        oeuvreName.textContent = folder.name;
+
+                        oeuvreCardItem.addEventListener("click", () => {
+                            const formattedTitle = folder.name.replace(/\s+/g, "");
+                            window.location.href = `Oeuvre.html?title=${encodeURIComponent(formattedTitle)}&id=${folder.fld_id}`;
+                        });
+
+                        oeuvreCardItem.appendChild(oeuvreName);
+                        targetList.appendChild(oeuvreCardItem);
+                    });
+                } else {
+                    targetList.innerHTML = `<p class="empty-message">Aucun élément trouvé.</p>`;
+                }
+            })
+            .catch(error => {
+                console.error("Erreur :", error);
+                targetList.innerHTML = `<p class="empty-message">Erreur : ${error.message}</p>`;
             });
-        })
-        .catch(error => {
-            console.error("Erreur :", error);
-        });
+    };
+
+    loadFolders(68894, animesList); // Animes
+    loadFolders(68897, seriesList); // Séries
 });

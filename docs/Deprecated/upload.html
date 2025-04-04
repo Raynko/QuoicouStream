@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Uploader un fichier sur Darkibox</title>
-    <link rel="stylesheet" href="CSS/upload.css">
+    <link rel="stylesheet" href="upload.css">
 </head>
 <body>
     <div class="container">
@@ -36,7 +36,8 @@
     <!-- Section séparée pour afficher les fichiers en cours d'upload -->
     <div class="container upload-progress-container">
         <h2>Fichiers en cours d'upload</h2>
-        <table id="upload-table">
+        <div id="upload-message">Aucun fichier en cours</div>
+        <table id="upload-table" style="display: none;">
             <thead>
                 <tr>
                     <th>URL</th>
@@ -44,14 +45,12 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td colspan="2">Aucun fichier en cours</td>
-                </tr>
+                <!-- Les fichiers en cours d'upload seront ajoutés ici -->
             </tbody>
         </table>
     </div>
 
-    <script src="JS/upload.js"></script>
+    <script src="upload.js"></script>
 </body>
 </html>
 

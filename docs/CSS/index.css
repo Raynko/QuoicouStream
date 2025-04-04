@@ -1,3 +1,7 @@
+/* Importation des polices */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Rubik');
+
 /* Réinitialisation des styles par défaut */
 * {
     margin: 0;
@@ -6,15 +10,11 @@
 }
 
 body {
-    margin: 0;
-    padding: 0;
     background-color: rgb(16, 23, 37);
-    font-family: Rubik, sans-serif;
+    font-family: 'Rubik', sans-serif;
 }
 
 .header {
-    margin: 0;
-    padding: 0;
     user-select: none;
     border-bottom: 2px solid rgb(29, 73, 114);
 }
@@ -30,39 +30,41 @@ body {
     width: 30px;
     height: 30px;
     margin-left: 30px;
-    user-select: none;
     pointer-events: none; 
 }   
 
 .header-title {
     color: white;
     font-size: 26px;
-    display: flex;
     margin-left: 10px;
 }
 
 .header-desc {
     color: rgb(251, 255, 0);
     font-size: 15px;
-    display: flex;
     margin-left: 10px;
     font-family: Montserrat, sans-serif;
-    font-weight: normal;
 }
 
-.container {
-    margin: 0;
+#animes-container,
+#series-container {
     padding: 20px;
-    padding-top: 100px;
     font-family: Montserrat, sans-serif;
+}
+
+#animes-container {
+    padding-top: 80px;
+}
+
+#series-container {
+    padding-top: 20px;
 }
 
 .catalog-contents {
     margin: 0 auto; /* Centrer horizontalement */
     padding: 20px; /* Ajoute une marge intérieure de 20px */
     background-color: rgba(0, 0, 0, 0.45);
-    max-width: 800px; /* Limite la largeur totale */
-    box-sizing: border-box; /* Inclut le padding dans la largeur */
+    max-width: 810px; /* Limite la largeur totale */
     border-radius: 5px; /* Ajoute des coins arrondis */
 }
 
@@ -71,7 +73,6 @@ body {
     font-size: 22px;
     font-weight: bold;
     user-select: none;
-    pointer-events: none; 
 }
 
 .seperator {
@@ -83,20 +84,20 @@ body {
     display: flex; /* Place les cartes côte à côte */
     flex-wrap: wrap; /* Permet de passer à la ligne si nécessaire */
     gap: 20px; /* Ajoute un espace de 20px entre les cartes */
-    justify-content: center; /* Centre les cartes horizontalement */
+    justify-content: left; /* Centre les cartes horizontalement */
     padding: 20px; /* Ajoute une marge intérieure */
     background-color: rgba(0, 0, 0, 0.521);
     max-width: 800px; /* Limite la largeur totale */
-    box-sizing: border-box; /* Inclut le padding dans la largeur */
     border: 5px; /* Ajoute des coins arrondis */
 }
 
-.oeuvre-card {
+.oeuvre-card-item {
     width: 130px; /* Largeur fixe */
-    height: 190px; /* Hauteur fixe */
+    height: 150px; /* Hauteur fixe */
     display: flex;
     align-items: center;
     justify-content: center;
+    color: rgb(191, 202, 231);
     background-color: rgb(21, 28, 46);
     border-radius: 5px; /* Ajoute des coins arrondis */
     margin: 0; /* Supprime les marges inutiles */
@@ -104,16 +105,24 @@ body {
     border: 2px solid rgb(29, 73, 114); /* Bordure de 5px */
 }
 
-.oeuvre-card:hover {
+.oeuvre-card-item:hover {
+    color: white;
     background-color: rgb(29, 73, 114);
     cursor: pointer;
 }
 
 .oeuvre-name {
-    color: rgb(255, 255, 255);
-    font-size: 13px;
+    font-size: 16px;
     font-weight: bold;
     text-align: center; /* Centre le texte dans la carte */
     user-select: none;
-    pointer-events: none; 
+}
+
+.loading-message {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px auto;
+    font-family: Rubik, sans-serif;
 }

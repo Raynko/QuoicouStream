@@ -1,103 +1,128 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Gestion du bouton "Retour"
-    const returnBtn = document.getElementById("return-btn");
-    if (returnBtn) {
-        returnBtn.addEventListener("click", () => {
-            window.location.href = "index.html"; // Redirige vers la page principale
-        });
-    }
-
+    const apiKey = "141449uijs7m0mqo4w1opg";
+    const folderListUrl = `https://darkibox.com/api/folder/list?key=${apiKey}&files=1`;
     const params = new URLSearchParams(window.location.search);
-    const title = params.get("title");
+    const folderId = params.get("id");
 
-    if (title) {
-        // Formate le titre pour ajouter des espaces avant les majuscules
-        const formattedTitle = title.replace(/([A-Z])/g, " $1").trim();
+    if (folderId) {
+        const seasonsList = document.querySelector(".seasons-list");
+        const episodesList = document.querySelector(".episodes-list");
 
-        // Met à jour le titre de la page
-        document.title = `${formattedTitle} | QuoicouStream`;
+        seasonsList.innerHTML = `<p class="loading-message">Chargement...</p>`;
 
-        // Affiche le titre formaté dans la page
-        document.querySelector(".oeuvre-title").textContent = formattedTitle;
+        Promise.all([
+            fetch(`${folderListUrl}&fld_id=68894`).then(response => response.json()), // Animes
+            fetch(`${folderListUrl}&fld_id=68897`).then(response => response.json())  // Séries
+        ])
+            .then(([animesData, seriesData]) => {
+                const allFolders = [
+                    ...(animesData.result?.folders || []),
+                    ...(seriesData.result?.folders || [])
+                ];
 
-        // Charger les détails de l'œuvre depuis le fichier JSON
-        fetch("JSON/oeuvres.json")
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Erreur lors du chargement du fichier JSON : ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                const oeuvre = data.oeuvres.find(o => o.title.replace(/\s+/g, "") === title);
-                if (oeuvre) {
-                    // Sélectionne les conteneurs pour les saisons et les épisodes
-                    const seasonList = document.querySelector(".seasons-list");
-                    const episodeList = document.querySelector(".episodes-list");
+                const folder = allFolders.find(f => f.fld_id === parseInt(folderId, 10));
 
-                    // Vérifie que les conteneurs existent
-                    if (!seasonList || !episodeList) {
-                        throw new Error("Les conteneurs pour les saisons ou les épisodes sont introuvables.");
-                    }
+                if (folder) {
+                    document.querySelector(".oeuvre-title").textContent = folder.name;
+                    document.title = `${folder.name} | QuoicouStream`;
 
-                    // Fonction pour afficher les épisodes d'une saison
-                    const displayEpisodes = (episodes, saison) => {
-                        // Vide la liste des épisodes
-                        episodeList.innerHTML = "";
-
-                        // Ajoute les épisodes de la saison sélectionnée
-                        episodes.forEach(episode => {
-                            const episodeCard = document.createElement("div");
-                            episodeCard.classList.add("card");
-                            episodeCard.innerHTML = `<p class="text">Episode ${episode.episode}</p>`;
-
-                            // Ajoute un gestionnaire de clic pour rediriger vers episode.html
-                            episodeCard.addEventListener("click", () => {
-                                const episodeUrl = `episode.html?title=${encodeURIComponent(title)}&saison=${saison}&episode=${episode.episode}&video=${episode.lien_video}`;
-                                window.location.href = episodeUrl;
-                            });
-
-                            episodeList.appendChild(episodeCard);
-                        });
-                    };
-
-                    // Affiche les saisons et ajoute un gestionnaire d'événements
-                    oeuvre.saisons.forEach((saison, index) => {
-                        const seasonCard = document.createElement("div");
-                        seasonCard.classList.add("card");
-                        seasonCard.innerHTML = `<p class="text">Saison ${saison.saison}</p>`;
-
-                        // Ajoute un gestionnaire de clic pour chaque saison
-                        seasonCard.addEventListener("click", () => {
-                            // Retire la classe "active" de toutes les saisons
-                            document.querySelectorAll(".seasons-list .card").forEach(card => {
-                                card.classList.remove("active");
-                            });
-
-                            // Ajoute la classe "active" à la saison sélectionnée
-                            seasonCard.classList.add("active");
-
-                            // Affiche les épisodes de la saison sélectionnée
-                            displayEpisodes(saison.episodes, saison.saison);
-                        });
-
-                        // Ajoute la saison à la liste
-                        seasonList.appendChild(seasonCard);
-
-                        // Sélectionne automatiquement la première saison
-                        if (index === 0) {
-                            seasonCard.classList.add("active");
-                            displayEpisodes(saison.episodes, saison.saison);
-                        }
-                    });
+                    loadSeasons(folderId, seasonsList, episodesList);
                 } else {
-                    document.querySelector(".oeuvre-title").textContent = "Œuvre non trouvée";
+                    throw new Error("Dossier principal introuvable.");
                 }
             })
             .catch(error => {
                 console.error("Erreur :", error);
+                seasonsList.innerHTML = `<p class="empty-message">Erreur : ${error.message}</p>`;
             });
-    } else {
-        document.querySelector(".oeuvre-title").textContent = "Œuvre non trouvée";
+    }
+
+    const loadSeasons = (folderId, seasonsList, episodesList) => {
+        fetch(`${folderListUrl}&fld_id=${folderId}&files=1`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.result?.folders?.length > 0) {
+                    seasonsList.innerHTML = "";
+
+                    // Trier les saisons par ordre alphabétique
+                    const sortedSeasons = data.result.folders.sort((a, b) => a.name.localeCompare(b.name));
+
+                    sortedSeasons.forEach((folder, index) => {
+                        const seasonCard = document.createElement("div");
+                        seasonCard.classList.add("card-item");
+                        seasonCard.innerHTML = `<p class="card-item-text">${folder.name}</p>`;
+
+                        seasonCard.addEventListener("click", () => {
+                            document.querySelectorAll(".card-item").forEach(item => {
+                                item.classList.remove("active");
+                                item.style.pointerEvents = "auto";
+                            });
+                            seasonCard.classList.add("active");
+                            seasonCard.style.pointerEvents = "none";
+
+                            episodesList.innerHTML = `<p class="loading-message">Chargement...</p>`;
+                            loadEpisodes(folder.fld_id, episodesList);
+                        });
+
+                        seasonsList.appendChild(seasonCard);
+
+                        if (index === 0) {
+                            seasonCard.classList.add("active");
+                            seasonCard.style.pointerEvents = "none";
+                            episodesList.innerHTML = `<p class="loading-message">Chargement...</p>`;
+                            loadEpisodes(folder.fld_id, episodesList);
+                        }
+                    });
+                } else {
+                    seasonsList.innerHTML = `<p class="empty-message">Aucune saison trouvée.</p>`;
+                }
+            })
+            .catch(error => {
+                console.error("Erreur :", error);
+                seasonsList.innerHTML = `<p class="empty-message">Erreur : ${error.message}</p>`;
+            });
+    };
+
+    const loadEpisodes = (seasonId, episodesList) => {
+        fetch(`${folderListUrl}&fld_id=${seasonId}&files=1`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.result?.files?.length > 0) {
+                    episodesList.innerHTML = "";
+
+                    // Trier les épisodes par ordre alphabétique
+                    const sortedEpisodes = data.result.files.sort((a, b) => a.title.localeCompare(b.title));
+
+                    sortedEpisodes.forEach(file => {
+                        const episodeCard = document.createElement("div");
+                        episodeCard.classList.add("card-item");
+                        episodeCard.innerHTML = `<p class="card-item-text">${file.title}</p>`;
+
+                        // Ajouter un événement click pour rediriger vers episode.html
+                        episodeCard.addEventListener("click", () => {
+                            const title = document.querySelector(".oeuvre-title").textContent.replace(/\s+/g, ""); // Supprimer les espaces
+                            const videoCode = file.file_code;
+
+                            // Rediriger vers episode.html avec les paramètres simplifiés
+                            window.location.href = `episode.html?title=${encodeURIComponent(title)}&video=${videoCode}`;
+                        });
+
+                        episodesList.appendChild(episodeCard);
+                    });
+                } else {
+                    episodesList.innerHTML = `<p class="empty-message">Aucun épisode trouvé.</p>`;
+                }
+            })
+            .catch(error => {
+                console.error("Erreur :", error);
+                episodesList.innerHTML = `<p class="empty-message">Erreur : ${error.message}</p>`;
+            });
+    };
+
+    const returnBtn = document.getElementById("return-btn");
+    if (returnBtn) {
+        returnBtn.addEventListener("click", () => {
+            window.location.href = "index.html";
+        });
     }
 });

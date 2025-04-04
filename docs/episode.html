@@ -5,15 +5,11 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-        <link href='https://fonts.googleapis.com/css?family=Rubik' rel='stylesheet'>
-
         <link rel="stylesheet" type="text/css" href="CSS/index.css">
         <link rel="stylesheet" type="text/css" href="CSS/episode.css">
 
-
         <link rel="icon" href="IMG/ICO/ICO.ico">
-        <title>Nom de l'oeuvre | QuoicouStream</title>
+        <title>| QuoicouStream</title>
     </head>
     <body>
         <div class="header">
@@ -24,22 +20,19 @@
             </div>
         </div>  
 
-        <div class="container">
-
-            <div class="return-btn-container">
-                <div id="return-btn" class="return-btn">🡄 Retour</div>
-            </div>
-
-            <div class="contents">
+        <div class="episode-contents-container">
+            <div class="episode-contents">
 
                 <h2 class="oeuvre-title">Nom de l'oeuvre</h2> 
-                <div class="season-episode-container">
-                    <p class="season">Saison 1 /</p>
-                    <p class="episode">Episode 1</p>
+
+                <!-- Saison et épisode -->
+                <div class="season-episode-texts">
+                    <p class="season-text">Saison 1 /</p>
+                    <p class="episode-text">Épisode 1</p>
                 </div>
 
-
-                <div class="video">
+                <!-- Vidéo -->
+                <div class="video-player">
                     <iframe src="https://darkibox.com/embed-6ychhgdjsozk.html" 
                     frameborder="0" 
                     marginwidth="0" marginheight="0" 
@@ -47,15 +40,14 @@
                     allowfullscreen 
                     style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
                 </div>
-
             </div>
 
-            <div class="prev-next-btn-container contents">
-                <div id="prev-btn" class="prev-next-btn">🡄 Précédent</div>
-                <select name="episodes" id="episodes-select"></select>
-                <div id="next-btn" class="prev-next-btn">Suivant 🡆</div>
+            <!-- Navigation entre épisodes -->
+            <div class="prev-next-btn-container">
+                <div id="prev-episode-btn" class="prev-next-btn">🡄 Précédent</div>
+                <select id="episodes-select"></select>
+                <div id="next-episode-btn" class="prev-next-btn">Suivant 🡆</div>
             </div>
-
         </div>
 
         <script src="JS/EpisodeScript.js"></script>

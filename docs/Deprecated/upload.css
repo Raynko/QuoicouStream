@@ -192,3 +192,10 @@ button:hover {
 #upload-table tbody tr td {
     font-size: 14px;
 }
+
+#upload-message {
+    text-align: center;
+    font-size: 16px;
+    color: #666;
+    margin-top: 10px;
+}

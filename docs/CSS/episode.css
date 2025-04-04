@@ -1,9 +1,14 @@
-.contents {
-    margin: 0 auto; /* Centrer horizontalement */
+.episode-contents-container {
+    padding: 20px;
+    padding-top: 80px;
+    font-family: Montserrat, sans-serif;
+}
+
+.episode-contents {
+    margin: auto; /* Centrer horizontalement */
     padding: 20px; /* Ajoute une marge intérieure de 20px */
     background-color: rgba(0, 0, 0, 0.45);
     max-width: 800px; /* Limite la largeur totale */
-    box-sizing: border-box; /* Inclut le padding dans la largeur */
     border-radius: 5px; /* Ajoute des coins arrondis */
 }
 
@@ -12,15 +17,15 @@
     font-size: 30px;
     font-weight: bold;
     user-select: none;
+    width: fit-content; /* Prend toute la largeur disponible */
     transition: color 0.1s ease;
 }
-
 .oeuvre-title:hover {
     cursor: pointer; /* Change le curseur au survol */
     color: rgb(81, 109, 133);
 }
 
-.season-episode-container {
+.season-episode-texts {
     display: flex; /* Place les éléments côte à côte */
     align-items: center; /* Aligne verticalement les éléments */
     gap: 5px; /* Ajoute un espace entre .season et .episode */
@@ -31,19 +36,18 @@
     user-select: none;
     pointer-events: none; 
 }
-.season {
+.season-text {
     color: rgb(121, 121, 121)
 }
-.episode {
+.episode-text {
     color: rgb(209, 209, 209);
 }
 
-.video {
+.video-player {
     position: relative;
     width: 100%; /* La vidéo occupe toute la largeur disponible dans .contents */
     padding-top: calc(56.25% - 6px); /* Ratio 16:9 pour la vidéo */
     margin: 0; /* Supprime les marges */
-    box-sizing: border-box; /* Inclut le padding dans la largeur */
     border: 3px solid rgb(50, 69, 116); /* Bordure de 2px de couleur rgb(50, 69, 116) */
     
 }
@@ -57,31 +61,12 @@ iframe {
     border: none; /* Supprime la bordure de l'iframe */
 }
 
-.return-btn-container {
-    max-width: 800px; /* Limite la largeur totale */
-    box-sizing: border-box; /* Inclut le padding dans la largeur */
-    margin: 0 auto; /* Centrer horizontalement */
-    margin-top: -36px; /* Ajoute une marge supérieure de 20px */
-    margin-bottom: 10px;
-}
-
-.return-btn {
-    background-color: rgb(50, 69, 116);
-    color: white;
-    border: none;
-    padding: 5px 10px; /* Ajoute un espace intérieur pour le contenu */
-    border-radius: 5px; /* Ajoute des coins arrondis */
-    cursor: pointer; /* Change le curseur au survol */
-    font-size: 12px; /* Taille de la police */
-    font-weight: bold; /* Met le texte en gras */
-    display: inline-block; /* Permet au bouton de s'adapter à son contenu */
-}
-
-.return-btn:hover {
-    background-color: rgb(84, 103, 150);
-}
-
 .prev-next-btn-container {
+    margin: auto; /* Centrer horizontalement */
+    padding: 20px; /* Ajoute une marge intérieure de 20px */
+    background-color: rgba(0, 0, 0, 0.45);
+    max-width: 800px; /* Limite la largeur totale */
+    border-radius: 5px; /* Ajoute des coins arrondis */
     display: flex; /* Active Flexbox pour aligner les éléments */
     justify-content: center; /* Centre les éléments horizontalement */
     align-items: center; /* Centre les éléments verticalement */
@@ -108,7 +93,6 @@ iframe {
     text-align: center; /* Centre le texte si plusieurs lignes */
     padding-bottom: 2px;
     outline: none;
-    transition: color 0.1s ease;
     user-select: none; /* Empêche la sélection du texte */
 }
 
@@ -124,11 +108,9 @@ iframe {
 }
 
 #episodes-select {
-    background-color: rgb(31, 36, 48);
+    background-color: rgb(46, 54, 71);
     transition: color 0.1s ease;
 }
-
-
 #episodes-select:hover {
-    background-color: rgb(41, 48, 65);
+    background-color: rgb(63, 74, 97);
 }

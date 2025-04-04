@@ -41,14 +41,25 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const data = await response.json();
+            const uploadMessage = document.getElementById("upload-message");
+            const uploadTable = document.getElementById("upload-table");
+
             if (data.status === 200 && data.result && data.result.length > 0) {
+                uploadMessage.style.display = "none"; // Cache le message
+                uploadTable.style.display = "table"; // Affiche le tableau
                 displayUploadsInProgress(data.result);
             } else {
-                uploadTableBody.innerHTML = `<tr><td colspan="3">Aucun fichier en cours</td></tr>`;
+                uploadMessage.style.display = "block"; // Affiche le message
+                uploadMessage.textContent = "Aucun fichier en cours";
+                uploadTable.style.display = "none"; // Cache le tableau
             }
         } catch (error) {
             console.error("Erreur :", error);
-            uploadTableBody.innerHTML = `<tr><td colspan="3">Erreur : ${error.message}</td></tr>`;
+            const uploadMessage = document.getElementById("upload-message");
+            uploadMessage.style.display = "block";
+            uploadMessage.textContent = `Erreur : ${error.message}`;
+            const uploadTable = document.getElementById("upload-table");
+            uploadTable.style.display = "none";
         }
     }
 
