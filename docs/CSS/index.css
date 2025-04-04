@@ -126,3 +126,11 @@ body {
     margin: 20px auto;
     font-family: Rubik, sans-serif;
 }
+
+.empty-message {
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    margin: 20px auto;
+    font-family: Rubik, sans-serif;
+}
