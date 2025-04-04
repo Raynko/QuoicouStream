@@ -50,6 +50,7 @@
     margin: 0; /* Supprime les marges inutiles */
     flex-shrink: 0; /* Empêche les cartes de rétrécir */
     border: 2px solid rgb(29, 73, 114); /* Bordure de 5px */
+    user-select: none; /* Empêche la sélection du texte */
 }
 
 .card-item:hover {
@@ -82,6 +83,7 @@
     max-width: 800px; /* Limite la largeur totale */
     margin: 0 auto; /* Centrer horizontalement */
     margin-bottom: 10px;
+    user-select: none; /* Empêche la sélection du texte */
 }
 
 .return-btn {

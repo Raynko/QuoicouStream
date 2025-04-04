@@ -2,43 +2,76 @@ document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search);
     const rawTitle = params.get("title");
     const videoCode = params.get("video");
+    const folderId = params.get("id"); // Récupérer l'ID du dossier
 
-    if (rawTitle && videoCode) {
-        // Remettre les espaces dans le titre
-        const title = rawTitle.replace(/([a-z])([A-Z])/g, "$1 $2");
+    // Sélection des éléments HTML pour la saison, l'épisode et l'iframe
+    const seasonTextElement = document.querySelector(".season-text");
+    const episodeTextElement = document.querySelector(".episode-text");
+    const oeuvreTitleElement = document.querySelector(".oeuvre-title");
+    const iframeElement = document.querySelector(".video-player iframe");
 
-        // Met à jour le titre de la page
-        document.title = `${title} | QuoicouStream`;
+    // Fonction pour ajouter des espaces dans le titre brut
+    const formatTitle = (title) => {
+        return title.replace(/([a-z])([A-Z])/g, "$1 $2");
+    };
 
-        // Met à jour les informations dans la page
-        const oeuvreTitleElement = document.querySelector(".oeuvre-title");
-        oeuvreTitleElement.textContent = title;
-        document.querySelector("iframe").src = `https://darkibox.com/embed-${videoCode}.html`;
+    // Vérifier si le titre brut est disponible
+    if (rawTitle) {
+        const formattedTitle = formatTitle(rawTitle); // Ajouter des espaces dans le titre
 
-        // Charger les informations du fichier via l'API File Info
+        // Mettre à jour le titre de l'œuvre
+        oeuvreTitleElement.textContent = formattedTitle;
+
+        // Mettre à jour le titre de la page
+        document.title = `${formattedTitle} | QuoicouStream`;
+
+        // Rendre le titre cliquable pour rediriger vers Oeuvre.html
+        oeuvreTitleElement.addEventListener("click", () => {
+            window.location.href = `Oeuvre.html?title=${encodeURIComponent(rawTitle)}&id=${folderId}`;
+        });
+    }
+
+    if (videoCode) {
+        // Mettre à jour la source de l'iframe avec le videoCode
+        iframeElement.src = `https://darkibox.com/embed-${videoCode}.html`;
+
+        // Effectuer une requête à l'API File Info pour récupérer le file_title
         fetch(`https://darkibox.com/api/file/info?key=141449uijs7m0mqo4w1opg&file_code=${videoCode}`)
             .then(response => response.json())
             .then(data => {
-                if (data.result?.length > 0) {
-                    const fileInfo = data.result[0];
-                    const folderId = fileInfo.fld_id; // Récupérer l'ID du dossier
+                if (data.status === 200 && data.result?.length > 0) {
+                    const fileTitle = data.result[0].file_title; // Récupérer le titre du fichier
+                    console.log(`Titre du fichier récupéré : ${fileTitle}`);
 
-                    if (folderId) {
-                        // Ajouter un événement click pour rediriger vers oeuvre.html
-                        oeuvreTitleElement.addEventListener("click", () => {
-                            window.location.href = `Oeuvre.html?title=${encodeURIComponent(rawTitle)}&id=${folderId}`;
-                        });
+                    // Extraire les informations de la saison et de l'épisode depuis file_title
+                    const match = fileTitle.match(/S(\d{2})E(\d{2})/i); // Rechercher le format SXXEXX
+
+                    if (match) {
+                        const seasonNumber = parseInt(match[1], 10); // Extraire le numéro de la saison
+                        const episodeNumber = parseInt(match[2], 10); // Extraire le numéro de l'épisode
+
+                        // Mettre à jour les textes de la saison et de l'épisode
+                        seasonTextElement.textContent = `Saison ${seasonNumber} /`;
+                        episodeTextElement.textContent = `Épisode ${episodeNumber}`;
                     } else {
-                        console.error("Erreur : L'ID du dossier (fld_id) est introuvable dans la réponse de l'API.");
+                        // Si aucune information n'est trouvée, afficher des valeurs par défaut
+                        seasonTextElement.textContent = `Saison 0 /`;
+                        episodeTextElement.textContent = `Épisode 0`;
                     }
                 } else {
-                    console.error("Erreur : Aucune donnée trouvée dans la réponse de l'API File Info.");
+                    console.error("Erreur lors de la récupération des informations du fichier.");
+                    seasonTextElement.textContent = `Saison 0 /`;
+                    episodeTextElement.textContent = `Épisode 0`;
                 }
             })
             .catch(error => {
-                console.error("Erreur lors de la requête API File Info :", error);
+                console.error("Erreur lors de la requête API :", error);
+                seasonTextElement.textContent = `Saison 0 /`;
+                episodeTextElement.textContent = `Épisode 0`;
             });
     } else {
-        console.error("Paramètres manquants dans l'URL");
+        console.error("Paramètre videoCode manquant dans l'URL.");
+        seasonTextElement.textContent = `Saison 0 /`;
+        episodeTextElement.textContent = `Épisode 0`;
     }
 });
